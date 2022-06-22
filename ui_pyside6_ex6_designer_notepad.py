@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pyside6_ex6_designer_notepadYFRwuh.ui'
+## Form generated from reading UI file 'pyside6_ex6_designer_notepadZiMrHY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
@@ -27,8 +27,8 @@ class Ui_MainWindow(object):
         MainWindow.resize(826, 629)
         self.action_N = QAction(MainWindow)
         self.action_N.setObjectName(u"action_N")
-        self.new_window = QAction(MainWindow)
-        self.new_window.setObjectName(u"new_window")
+        self.action_W = QAction(MainWindow)
+        self.action_W.setObjectName(u"action_W")
         self.action_O = QAction(MainWindow)
         self.action_O.setObjectName(u"action_O")
         self.action_S = QAction(MainWindow)
@@ -99,7 +99,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 826, 22))
+        self.menubar.setGeometry(QRect(0, 0, 826, 24))
         self.menu_F = QMenu(self.menubar)
         self.menu_F.setObjectName(u"menu_F")
         self.menu_E = QMenu(self.menubar)
@@ -123,7 +123,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_V.menuAction())
         self.menubar.addAction(self.menu_H.menuAction())
         self.menu_F.addAction(self.action_N)
-        self.menu_F.addAction(self.new_window)
+        self.menu_F.addAction(self.action_W)
         self.menu_F.addAction(self.action_O)
         self.menu_F.addAction(self.action_S)
         self.menu_F.addAction(self.action_A)
@@ -161,6 +161,7 @@ class Ui_MainWindow(object):
         self.menu_H.addAction(self.action_A_3)
 
         self.retranslateUi(MainWindow)
+        self.action_X.triggered.connect(MainWindow.close)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -171,9 +172,9 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.action_N.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+N", None))
 #endif // QT_CONFIG(shortcut)
-        self.new_window.setText(QCoreApplication.translate("MainWindow", u"\uc0c8 \ucc3d(&W)", None))
+        self.action_W.setText(QCoreApplication.translate("MainWindow", u"\uc0c8 \ucc3d(&W)", None))
 #if QT_CONFIG(shortcut)
-        self.new_window.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+Shift+N", None))
+        self.action_W.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+Shift+N", None))
 #endif // QT_CONFIG(shortcut)
         self.action_O.setText(QCoreApplication.translate("MainWindow", u"\uc5f4\uae30(&O)...", None))
 #if QT_CONFIG(shortcut)
