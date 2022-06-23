@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from ui_pyside6_ex6_designer_notepad import Ui_MainWindow
 
 
@@ -13,11 +13,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_X.triggered.connect(self.close)
         self.windows=[]
         self.opend = False
-        self.open_file_path = ''
+        self.open_file_path = '제목없음'
+
+    def save_changed_data(self):
+        msg_box = QMessageBox()
+        msg_box.setText(f'변경내용을 {self.open_file_path}에 저장하시겠습니까?')
+        msg_box.addButton("저장",QMessageBox.YesRole) #0
+        msg_box.addButton("저장 안함",QMessageBox.NoRole) #1
+        msg_box.addButton("취소",QMessageBox.RejectRole) #2
+        ret = msg_box.exec()
+        if ret == 2:
+            return ret
 
     def closeEvent(self, event):
+        ret = self.save_changed_data()
+        if ret == 2:
+            event.ignore()
+
         print(f'close event')
-        # event.ignore()
 
     def savefile(self,fname):
         text = self.plainTextEdit.toPlainText()
