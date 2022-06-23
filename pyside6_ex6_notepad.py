@@ -10,9 +10,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_O.triggered.connect(self.open_file)
         self.action_S.triggered.connect(self.save_file)
         self.action_A.triggered.connect(self.saveas_file)
+        self.action_X.triggered.connect(self.close)
         self.windows=[]
         self.opend = False
         self.open_file_path = ''
+
+    def closeEvent(self, event):
+        print(f'close event')
+        # event.ignore()
 
     def savefile(self,fname):
         text = self.plainTextEdit.toPlainText()

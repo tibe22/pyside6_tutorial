@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pyside6_ex6_designer_notepadZiMrHY.ui'
+## Form generated from reading UI file 'pyside6_ex6_designer_notepadqWYiPF.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
@@ -161,7 +161,6 @@ class Ui_MainWindow(object):
         self.menu_H.addAction(self.action_A_3)
 
         self.retranslateUi(MainWindow)
-        self.action_X.triggered.connect(MainWindow.close)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
