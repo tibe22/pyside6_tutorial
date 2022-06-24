@@ -1,6 +1,12 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QDialog
 from ui_pyside6_ex6_designer_notepad import Ui_MainWindow
+from ui_pyside6_ex6_designer_notepad_find import Ui_Dialog
 
+class findWindow(Ui_Dialog, QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        '''https://www.pythonguis.com/tutorials/pyside6-creating-dialogs-qt-designer/'''
+        self.setupUi(self)
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -16,6 +22,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_T.triggered.connect(self.cutFunction)
         self.action_C.triggered.connect(self.copyFunction)
         self.action_P_2.triggered.connect(self.pasteFunction)
+        self.action_F.triggered.connect(self.findFunction)
 
         self.windows=[]
         self.opend = False
@@ -91,6 +98,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def pasteFunction(self):
         self.plainTextEdit.paste()
+
+    def findFunction(self):
+        finddlg = findWindow(self)
+        finddlg.exec()
+
 
 
 app = QApplication()
