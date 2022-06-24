@@ -11,6 +11,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_S.triggered.connect(self.save_file)
         self.action_A.triggered.connect(self.saveas_file)
         self.action_X.triggered.connect(self.close)
+
+        self.action_U_2.triggered.connect(self.undoFunction)
+        self.action_T.triggered.connect(self.cutFunction)
+        self.action_C.triggered.connect(self.copyFunction)
+        self.action_P_2.triggered.connect(self.pasteFunction)
+
         self.windows=[]
         self.opend = False
         self.open_file_path = '제목없음'
@@ -74,6 +80,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if filename[0]:
             self.savefile(filename[0])
 
+    def undoFunction(self):
+        self.plainTextEdit.undo()
+
+    def copyFunction(self):
+        self.plainTextEdit.copy()
+
+    def cutFunction(self):
+        self.plainTextEdit.cut()
+
+    def pasteFunction(self):
+        self.plainTextEdit.paste()
 
 
 app = QApplication()
