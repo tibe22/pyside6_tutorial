@@ -1,5 +1,7 @@
 import sys
+import os
 import time
+import glob
 
 import PySide6.QtGui as QtGui
 import PySide6.QtWidgets as QtWidgets
@@ -57,10 +59,10 @@ class torrent(QtWidgets. QMainWindow):
         # export_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
         # close_action.triggered.connect(self.tree.remove_selected_hive)
         file_menu.addAction(copy_action)
-        # file_menu.addSeparator()
-        # quit_action = QtGui.QAction("Quit", self)
-        # quit_action.triggered.connect(self.close)
-        # file_menu.addAction(quit_action)
+        file_menu.addSeparator()
+        quit_action = QtGui.QAction("Quit", self)
+        quit_action.triggered.connect(self.close)
+        file_menu.addAction(quit_action)
         self.menuBar().addMenu(file_menu)
 
         # Set up find menu
@@ -157,13 +159,15 @@ class torrent(QtWidgets. QMainWindow):
         value_splitter = QtWidgets.QSplitter( QtGui.Qt.Orientation.Vertical)
         # value_splitter = QtWidgets.QSplitter(main_widget)
         value_splitter.addWidget(self.file_table)
-        self.value_hex = QtWidgets.QPlainTextEdit()
+
+        self.text_out = QtWidgets.QPlainTextEdit()
         mono_font = QtGui.QFont()
         mono_font.setFamilies(["Courier New", "Monospaced"])
         mono_font.setStyleHint(QtGui.QFont.Monospace)
-        self.value_hex.setFont(mono_font)
-        self.value_hex.setLineWrapMode(self.value_hex.LineWrapMode.NoWrap)
-        value_splitter.addWidget(self.value_hex)
+        self.text_out.setFont(mono_font)
+        self.text_out.setLineWrapMode(self.text_out.LineWrapMode.NoWrap)
+        self.text_out.setReadOnly(True)
+        value_splitter.addWidget(self.text_out)
         value_splitter.setStretchFactor(0, 2)
         value_splitter.setStretchFactor(1, 1)
         value_splitter.setChildrenCollapsible(False)
@@ -175,6 +179,8 @@ class torrent(QtWidgets. QMainWindow):
         self.progress_bar.setMaximumWidth(100)
         self.progress_bar.hide()
         self.statusBar().addPermanentWidget(self.progress_bar)
+        self.findfiles = []
+        self.parse_data= []
 
     def show_about(self):
         QtWidgets.QMessageBox().about( self, f"About torrent analyzer", f"use bencoder")
@@ -183,8 +189,18 @@ class torrent(QtWidgets. QMainWindow):
         QtWidgets.QMessageBox().about(self,f"",f'version 0.0.1')
 
     def show_find(self):
-        print(f'find dialog')
-        # self.find_dialog.exec()
+        name = "resume.dat"
+        for dirpath, dirname, filename in os.walk("I:\\"):
+            if name in filename:
+                self.findfiles.append(os.path.join(dirpath,name))
+
+        self.parse_torrent_dat(self.findfiles[0])
+        result = ' '.join(map(str, self.parse_data))
+        self.text_out.setPlainText(result)
+
+        print(f'find dialog : {self.findfiles}')
+
+
 
     def show_open_file(self):
         """Show the open file dialog"""
@@ -232,6 +248,7 @@ class torrent(QtWidgets. QMainWindow):
                 path = str(d[key][b'path'])
                 seedtime = str(d[key][b'seedtime'])
                 print(f'{fileName}, {added_on}, {completed_on}, {downloaded}, {uploaded}, {path}, {seedtime}')
+                self.parse_data.append(f'{fileName}, {added_on}, {completed_on}, {downloaded}, {uploaded}, {path}, {seedtime}, \n')
                 # print(fileName + "," + added_on + "," + completed_on + "," + downloaded + "," + uploaded + "," + path + "," + seedtime)
 
         f.close()

@@ -21,7 +21,7 @@ class FileTable(QtWidgets.QTableWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setColumnCount(4)
-        self.setHorizontalHeaderLabels(["Name", "Type", "Size", "Time"])
+        self.setHorizontalHeaderLabels(["FileName", "Type", "Size", "Time"])
         self.horizontalHeader().setStretchLastSection(True)
         self.setColumnWidth(0, 180)
         self.setColumnWidth(1, 120)
