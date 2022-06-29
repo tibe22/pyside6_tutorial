@@ -34,17 +34,28 @@ class torrent(QtWidgets. QMainWindow):
 
         # Set up file menu
         file_menu = QtWidgets.QMenu("&File", self)
-        open_action = QtGui.QAction("Open File", self)
+        open_action = QtGui.QAction("Open dat File", self)
         open_action.setShortcut(QtGui.QKeySequence.Open)
         open_action.triggered.connect(self.show_open_file)
         file_menu.addAction(open_action)
 
         close_action = QtGui.QAction("Close File", self)
-        close_action.setShortcut(QtGui.QKeySequence(
-            QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
+        close_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
+        open_action.triggered.connect(self.close_file)
         # close_action.triggered.connect(self.tree.remove_selected_hive)
         file_menu.addAction(close_action)
 
+        export_action = QtGui.QAction("Export File", self)
+        open_action.triggered.connect(self.export_file)
+        # export_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
+        # close_action.triggered.connect(self.tree.remove_selected_hive)
+        file_menu.addAction(export_action)
+
+        copy_action = QtGui.QAction("Copy File", self)
+        copy_action.triggered.connect(self.copy_file)
+        # export_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
+        # close_action.triggered.connect(self.tree.remove_selected_hive)
+        file_menu.addAction(copy_action)
         # file_menu.addSeparator()
         # quit_action = QtGui.QAction("Quit", self)
         # quit_action.triggered.connect(self.close)
@@ -195,6 +206,15 @@ class torrent(QtWidgets. QMainWindow):
 
     def open_file(self, filename: str):
         print(f'open file')
+
+    def close_file(self, filename: str):
+        print(f'close file')
+
+    def copy_file(self, filename: str):
+        print(f'copy file')
+
+    def export_file(self, filename: str):
+        print(f'export file')
 
     def closeEvent(self, event):
         """Save the current geometry of the application"""
