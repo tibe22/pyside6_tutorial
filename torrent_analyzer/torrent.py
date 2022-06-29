@@ -1,4 +1,5 @@
 import sys
+import time
 
 import PySide6.QtGui as QtGui
 import PySide6.QtWidgets as QtWidgets
@@ -168,13 +169,6 @@ class torrent(QtWidgets. QMainWindow):
         value_splitter.setChildrenCollapsible(False)
         main_layout.addWidget(value_splitter)
 
-        # main_splitter = QtWidgets.QSplitter(main_widget)
-        # main_splitter.addWidget(tree_container)
-        # main_splitter.addWidget(value_splitter)
-        # main_splitter.setStretchFactor(0, 4)
-        # main_splitter.setStretchFactor(1, 5)
-        # main_splitter.setChildrenCollapsible(False)
-        # main_layout.addWidget(main_splitter)
         self.setCentralWidget(main_widget)
 
         self.progress_bar = QtWidgets.QProgressBar(self.statusBar())
@@ -215,6 +209,32 @@ class torrent(QtWidgets. QMainWindow):
 
     def export_file(self, filename: str):
         print(f'export file')
+
+    def parse_torrent_dat(self,filename: str):
+        f = open(filename, "rb")
+        d = bencoder.decode(f.read())
+
+        def convert(epoch):
+            return time.strftime("%m-%d-%Y %H:%M:%S", time.localtime(epoch))
+
+        print("File_Name," + "Added_On," + "Completed_On," + "Downloaded," + "Uploaded," + "Path," + "Seedtime")
+        for key in d:
+            if key == b'.fileguard':
+                print("Ignore this!")
+            elif key == b'rec':
+                print("Ignore this!")
+            else:
+                fileName = str(key)
+                added_on = str(convert(d[key][b'added_on']))
+                completed_on = str(convert(d[key][b'completed_on']))
+                downloaded = str(d[key][b'downloaded'])
+                uploaded = str(d[key][b'uploaded'])
+                path = str(d[key][b'path'])
+                seedtime = str(d[key][b'seedtime'])
+                print(f'{fileName}, {added_on}, {completed_on}, {downloaded}, {uploaded}, {path}, {seedtime}')
+                # print(fileName + "," + added_on + "," + completed_on + "," + downloaded + "," + uploaded + "," + path + "," + seedtime)
+
+        f.close()
 
     def closeEvent(self, event):
         """Save the current geometry of the application"""
