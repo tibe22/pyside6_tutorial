@@ -1,30 +1,23 @@
-import struct
-
+import os
+import time
 from torrent import torrent
 import PySide6.QtWidgets as QtWidgets
 import PySide6.QtGui as QtGui
 import PySide6.QtCore as QtCore
 
-
-
-class FileData(QtWidgets.QTableWidgetItem):
-    def __init__(self, raw_data: bytes, value, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.raw_data = raw_data
-        self.file = value
-
-
 class FileTable(QtWidgets.QTableWidget):
-    """File table that shows the files of the finded files"""
+    '''table for find result'''
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setColumnCount(4)
-        self.setHorizontalHeaderLabels(["FileName", "Type", "Size", "Time"])
+        self.setColumnCount(5)
+        self.setHorizontalHeaderLabels(["FileName", "ext", "Path", "Size", "Time"])
         self.horizontalHeader().setStretchLastSection(True)
         self.setColumnWidth(0, 180)
         self.setColumnWidth(1, 120)
+        self.setColumnWidth(2, 520)
+        self.setColumnWidth(3, 120)
+        self.setColumnWidth(4, 120)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.data = None
@@ -36,17 +29,40 @@ class FileTable(QtWidgets.QTableWidget):
         self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setWordWrap(False)
         self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+        self.selectionModel().selectionChanged.connect(self.select_change)
 
-        self.selectionModel().selectionChanged.connect(self.handle_selection_change)
 
-
-    def handle_selection_change(self, selected: QtCore.QItemSelection, deselected: QtCore.QItemSelection):
+    def select_change(self, selected: QtCore.QItemSelection, deselected: QtCore.QItemSelection):
         print('handle selected file')
-        if len(selected.indexes()) < 1:
-            return
 
 
-    def set_data(self, reg_values: "list[Registry.RegistryValue]"):
+    def set_data(self, list_find_files):
+        print(f"file_table set_data {list_find_files}")
+        self.clearContents()
+        self.setRowCount(0)
+        self.window().text_out.setPlainText("")
+
+        for f in list_find_files:
+            print(f"set table {f}")
+            index = self.rowCount()
+            self.insertRow(index)
+            file_name = QtWidgets.QTableWidgetItem()
+            file_name.setText(f"{os.path.basename(f)}")
+            file_ext = QtWidgets.QTableWidgetItem()
+            file_ext.setText(f"{os.path.splitext(f)[1]}")
+            file_path = QtWidgets.QTableWidgetItem()
+            file_path.setText(f"{os.path.dirname(f)}")
+            file_size = QtWidgets.QTableWidgetItem()
+            file_size.setText(f"{os.path.getsize(f)}")
+            file_time = QtWidgets.QTableWidgetItem()
+            file_time.setText(f"{time.ctime(os.path.getctime(f))}")
+            self.setItem(index, 0, file_name)
+            self.setItem(index, 1, file_ext)
+            self.setItem(index, 2, file_path)
+            self.setItem(index, 3, file_size)
+            self.setItem(index, 4, file_time)
+
+        self.resizeRowsToContents()
         print('set_data')
 
     def get_icon(self, datatype: int) -> QtGui.QIcon:

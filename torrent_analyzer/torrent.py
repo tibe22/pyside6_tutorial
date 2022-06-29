@@ -1,7 +1,7 @@
 import sys
 import os
 import time
-import glob
+import platform
 
 import PySide6.QtGui as QtGui
 import PySide6.QtWidgets as QtWidgets
@@ -12,6 +12,13 @@ import file_table
 class torrent(QtWidgets. QMainWindow):
     def __init__(self):
         super().__init__()
+        self.os_name = platform.system()
+        self.find_root_path=""
+        if self.os_name == 'Windows':
+            self.find_root_path="I:\\"
+        else:
+            self.find_root_path="/Users"
+
 
         self.app = QtWidgets.QApplication.instance()
         self.settings = QtCore.QSettings()
@@ -59,10 +66,11 @@ class torrent(QtWidgets. QMainWindow):
         # export_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
         # close_action.triggered.connect(self.tree.remove_selected_hive)
         file_menu.addAction(copy_action)
-        file_menu.addSeparator()
-        quit_action = QtGui.QAction("Quit", self)
-        quit_action.triggered.connect(self.close)
-        file_menu.addAction(quit_action)
+        if self.os_name == 'Windows':
+            file_menu.addSeparator()
+            quit_action = QtGui.QAction("Quit", self)
+            quit_action.triggered.connect(self.close)
+            file_menu.addAction(quit_action)
         self.menuBar().addMenu(file_menu)
 
         # Set up find menu
@@ -88,9 +96,10 @@ class torrent(QtWidgets. QMainWindow):
         self.version_action.triggered.connect(self.show_version)
         help_menu.addAction(self.version_action)
 
-        about_action = QtGui.QAction("About", self)
-        about_action.triggered.connect(self.show_about)
-        help_menu.addAction(about_action)
+        if self.os_name == 'Windows':
+            about_action = QtGui.QAction("About", self)
+            about_action.triggered.connect(self.show_about)
+            help_menu.addAction(about_action)
         self.menuBar().addMenu(help_menu)
 
 
@@ -190,16 +199,20 @@ class torrent(QtWidgets. QMainWindow):
 
     def show_find(self):
         name = "resume.dat"
-        for dirpath, dirname, filename in os.walk("I:\\"):
+        self.findfiles.clear()
+        self.statusBar().showMessage("Loading...")
+        self.statusBar().repaint()
+        for dirpath, dirname, filename in os.walk(self.find_root_path):
             if name in filename:
                 self.findfiles.append(os.path.join(dirpath,name))
 
         self.parse_torrent_dat(self.findfiles[0])
         result = ' '.join(map(str, self.parse_data))
+        self.window().file_table.set_data(self.findfiles)
         self.text_out.setPlainText(result)
 
+        self.statusBar().clearMessage()
         print(f'find dialog : {self.findfiles}')
-
 
 
     def show_open_file(self):
