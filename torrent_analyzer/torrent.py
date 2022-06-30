@@ -8,6 +8,7 @@ import PySide6.QtWidgets as QtWidgets
 import PySide6.QtCore as QtCore
 import bencoder
 import file_table
+import openpyxl
 
 class torrent(QtWidgets. QMainWindow):
     def __init__(self):
@@ -56,7 +57,7 @@ class torrent(QtWidgets. QMainWindow):
         file_menu.addAction(close_action)
 
         export_action = QtGui.QAction("Export File", self)
-        open_action.triggered.connect(self.export_file)
+        export_action.triggered.connect(self.export_file)
         # export_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
         # close_action.triggered.connect(self.tree.remove_selected_hive)
         file_menu.addAction(export_action)
@@ -83,7 +84,7 @@ class torrent(QtWidgets. QMainWindow):
 
         # Set up view menu
         view_menu = QtWidgets.QMenu("&View", self)
-        self.native_style_action = QtGui.QAction("Use native style", self)
+        self.native_style_action = QtGui.QAction("status bar", self)
         # self.native_style_action.setCheckable(True)
         # self.native_style_action.setChecked(use_native_style)
         # self.native_style_action.toggled.connect(self.toggle_style)
@@ -101,8 +102,6 @@ class torrent(QtWidgets. QMainWindow):
             about_action.triggered.connect(self.show_about)
             help_menu.addAction(about_action)
         self.menuBar().addMenu(help_menu)
-
-
         self.menuBar().setContextMenuPolicy(QtCore.Qt.PreventContextMenu)
 
         self.statusBar()
@@ -126,6 +125,10 @@ class torrent(QtWidgets. QMainWindow):
         find_action = QtGui.QAction( QtGui.QIcon("img/find.png"), "Find", toolbar)
         find_action.triggered.connect(self.show_find)
         toolbar.addAction(find_action)
+
+        export_action = QtGui.QAction( QtGui.QIcon("img/export.png"), "export excel", toolbar)
+        export_action.triggered.connect(self.export_data)
+        toolbar.addAction(export_action)
         # find_next_action = QtGui.QAction(
         #     QtGui.QIcon(helpers.resource_path("img/find_next.png")), "Find Next", toolbar)
         # find_next_action.triggered.connect(self.find_dialog.handle_find)
@@ -213,6 +216,22 @@ class torrent(QtWidgets. QMainWindow):
 
         self.statusBar().clearMessage()
         print(f'find dialog : {self.findfiles}')
+
+    def export_data(self):
+        if(self.parse_data):
+            filename = QtWidgets.QFileDialog.getSaveFileName(self, "Title", "", "EXCEL (*.xlsx)")
+            print(f'excel : {filename}')
+            export_excel = openpyxl.Workbook()
+            ws = export_excel.active
+            ws.title = 'resume.dat'
+            excel_header = ["File_Name","Added_On","Completed_On","Downloaded","Uploaded","Path","Seedtime"]
+            ws.append(excel_header)
+            export_excel.save(filename[0])
+            export_excel.close()
+
+
+
+        print(f'export data to excel file')
 
 
     def show_open_file(self):
