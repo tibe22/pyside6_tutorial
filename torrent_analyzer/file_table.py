@@ -13,7 +13,7 @@ class FileTable(QtWidgets.QTableWidget):
         self.setColumnCount(5)
         self.setHorizontalHeaderLabels(["FileName", "ext", "Path", "Size", "Time"])
         self.horizontalHeader().setStretchLastSection(True)
-        self.setColumnWidth(0, 180)
+        self.setColumnWidth(0, 300)
         self.setColumnWidth(1, 120)
         self.setColumnWidth(2, 520)
         self.setColumnWidth(3, 120)
@@ -67,20 +67,6 @@ class FileTable(QtWidgets.QTableWidget):
 
     def get_icon(self, datatype: int) -> QtGui.QIcon:
         print('get_icon')
-
-    def reg_type_to_str(self, datatype: int) -> str:
-        print(f'reg_tupe_to_str')
-
-    def reg_data_to_str(self, datatype: int, raw_data: bytes, value) -> str:
-        print(f'reg_data_to_str')
-
-    def select_value(self, value: str):
-        for i in range(self.rowCount()):
-            if (value == self.item(i, 0).text()):
-                self.clearSelection()
-                self.selectRow(i)
-                self.scrollToItem(self.item(i, 0))
-                self.setFocus()
 
     def get_selected_row(self):
         if len(self.selectedItems()) > 0:

@@ -16,7 +16,7 @@ class torrent(QtWidgets. QMainWindow):
         self.os_name = platform.system()
         self.find_root_path=""
         if self.os_name == 'Windows':
-            self.find_root_path="I:\\"
+            self.find_root_path="F:\\acj\\programming\\"
         else:
             self.find_root_path="/Users"
 
@@ -27,11 +27,6 @@ class torrent(QtWidgets. QMainWindow):
         self.initial_style = self.app.style().name()
         self.app.setStyle("fusion")
 
-        # use_native_style = self.settings.value(
-        #     "view/native_style", False, bool)
-
-        # if not use_native_style:
-        #     self.app.setStyle("fusion")
 
         # Set up main window
         self.resize(1200, 700)
@@ -39,9 +34,6 @@ class torrent(QtWidgets. QMainWindow):
 
         # Restore window geometry from settings
         self.restoreGeometry(self.settings.value( "view/geometry", QtCore.QByteArray()))
-
-        # self.tree = key_tree.KeyTree(self)
-        # self.find_dialog = find_dialog.FindDialog(self)
 
         # Set up file menu
         file_menu = QtWidgets.QMenu("&File", self)
@@ -53,19 +45,15 @@ class torrent(QtWidgets. QMainWindow):
         close_action = QtGui.QAction("Close File", self)
         close_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
         open_action.triggered.connect(self.close_file)
-        # close_action.triggered.connect(self.tree.remove_selected_hive)
         file_menu.addAction(close_action)
 
         export_action = QtGui.QAction("Export File", self)
         export_action.triggered.connect(self.export_file)
-        # export_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
-        # close_action.triggered.connect(self.tree.remove_selected_hive)
         file_menu.addAction(export_action)
 
         copy_action = QtGui.QAction("Copy File", self)
         copy_action.triggered.connect(self.copy_file)
         # export_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.SHIFT | QtCore.Qt.Key_Delete))
-        # close_action.triggered.connect(self.tree.remove_selected_hive)
         file_menu.addAction(copy_action)
         if self.os_name == 'Windows':
             file_menu.addSeparator()
@@ -85,9 +73,6 @@ class torrent(QtWidgets. QMainWindow):
         # Set up view menu
         view_menu = QtWidgets.QMenu("&View", self)
         self.native_style_action = QtGui.QAction("status bar", self)
-        # self.native_style_action.setCheckable(True)
-        # self.native_style_action.setChecked(use_native_style)
-        # self.native_style_action.toggled.connect(self.toggle_style)
         view_menu.addAction(self.native_style_action)
         self.menuBar().addMenu(view_menu)
 
@@ -116,12 +101,7 @@ class torrent(QtWidgets. QMainWindow):
         open_action.triggered.connect(self.show_open_file)
         toolbar.addAction(open_action)
         close_action = QtGui.QAction( QtGui.QIcon("img/close.png"), "Close Selected File", toolbar)
-        # close_action.triggered.connect(self.tree.remove_selected_hive)
         toolbar.addAction(close_action)
-        # close_all_action = QtGui.QAction(
-        #     QtGui.QIcon(helpers.resource_path("img/close_all.png")), "Close All Hives", toolbar)
-        # close_all_action.triggered.connect(self.tree.remove_all_hives)
-        # toolbar.addAction(close_all_action)
         find_action = QtGui.QAction( QtGui.QIcon("img/find.png"), "Find", toolbar)
         find_action.triggered.connect(self.show_find)
         toolbar.addAction(find_action)
@@ -129,10 +109,6 @@ class torrent(QtWidgets. QMainWindow):
         export_action = QtGui.QAction( QtGui.QIcon("img/export.png"), "export excel", toolbar)
         export_action.triggered.connect(self.export_data)
         toolbar.addAction(export_action)
-        # find_next_action = QtGui.QAction(
-        #     QtGui.QIcon(helpers.resource_path("img/find_next.png")), "Find Next", toolbar)
-        # find_next_action.triggered.connect(self.find_dialog.handle_find)
-        # toolbar.addAction(find_next_action)
         self.addToolBar(toolbar)
 
         # Set up main layout
@@ -151,23 +127,6 @@ class torrent(QtWidgets. QMainWindow):
         self.statusBar().setStyleSheet(
             "QStatusBar QLabel { border-color: lightgray; border-style: solid; border-width: 0 1px 0 0; }")
 
-        # tree_container = QtWidgets.QWidget()
-        # tree_container_layout = QtWidgets.QVBoxLayout(tree_container)
-        # tree_container_layout.setContentsMargins(0, 0, 0, 0)
-        # tree_container.setLayout(tree_container_layout)
-
-        # tree_container_layout.addWidget(self.file_table)
-        # self.tree.setSizePolicy(
-        #     QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
-        # self.hive_info = hive_info_table.HiveInfoTable(tree_container)
-        # hive_geometry = self.hive_info.geometry()
-        # hive_geometry.setHeight(5)
-        # self.hive_info.setGeometry(hive_geometry)
-        # self.hive_info.setMinimumHeight(10)
-        # self.hive_info.setSizeAdjustPolicy(
-        #     self.hive_info.SizeAdjustPolicy.AdjustToContents)
-        # tree_container_layout.addWidget(self.hive_info)
-
         value_splitter = QtWidgets.QSplitter( QtGui.Qt.Orientation.Vertical)
         # value_splitter = QtWidgets.QSplitter(main_widget)
         value_splitter.addWidget(self.file_table)
@@ -180,8 +139,8 @@ class torrent(QtWidgets. QMainWindow):
         self.text_out.setLineWrapMode(self.text_out.LineWrapMode.NoWrap)
         self.text_out.setReadOnly(True)
         value_splitter.addWidget(self.text_out)
-        value_splitter.setStretchFactor(0, 2)
-        value_splitter.setStretchFactor(1, 1)
+        value_splitter.setStretchFactor(0, 1)
+        value_splitter.setStretchFactor(1, 2)
         value_splitter.setChildrenCollapsible(False)
         main_layout.addWidget(value_splitter)
 
@@ -210,26 +169,33 @@ class torrent(QtWidgets. QMainWindow):
                 self.findfiles.append(os.path.join(dirpath,name))
 
         self.parse_torrent_dat(self.findfiles[0])
-        result = ' '.join(map(str, self.parse_data))
         self.window().file_table.set_data(self.findfiles)
-        self.text_out.setPlainText(result)
-
+        for text in self.parse_data:
+            self.text_out.appendPlainText(text)
         self.statusBar().clearMessage()
         print(f'find dialog : {self.findfiles}')
+
+
 
     def export_data(self):
         if(self.parse_data):
             filename = QtWidgets.QFileDialog.getSaveFileName(self, "Title", "", "EXCEL (*.xlsx)")
             print(f'excel : {filename}')
-            export_excel = openpyxl.Workbook()
-            ws = export_excel.active
-            ws.title = 'resume.dat'
-            excel_header = ["File_Name","Added_On","Completed_On","Downloaded","Uploaded","Path","Seedtime"]
-            ws.append(excel_header)
-            export_excel.save(filename[0])
-            export_excel.close()
-
-
+            if(filename[0]):
+                export_excel = openpyxl.Workbook()
+                ws = export_excel.active
+                ws1 = export_excel.create_sheet()
+                ws.title = 'resume.dat'
+                ws1.title = 'filelist'
+                resume_header = ["File_Name","Added_On","Completed_On","Downloaded","Uploaded","Path","Seedtime"]
+                filelist_header = ["FileName", "ext", "Path", "Size", "Time"]
+                ws.append(resume_header)
+                for data in self.parse_data:
+                    ws.append(data.split(','))
+                ws1.append(filelist_header)
+                # ws1.append(data.split(','))
+                export_excel.save(filename[0])
+                export_excel.close()
 
         print(f'export data to excel file')
 
@@ -259,6 +225,7 @@ class torrent(QtWidgets. QMainWindow):
         print(f'export file')
 
     def parse_torrent_dat(self,filename: str):
+        print(f"{filename} parsing....")
         f = open(filename, "rb")
         d = bencoder.decode(f.read())
 
@@ -272,16 +239,15 @@ class torrent(QtWidgets. QMainWindow):
             elif key == b'rec':
                 print("Ignore this!")
             else:
-                fileName = str(key)
+                fileName = str(key.decode('utf8')).strip()
                 added_on = str(convert(d[key][b'added_on']))
                 completed_on = str(convert(d[key][b'completed_on']))
                 downloaded = str(d[key][b'downloaded'])
                 uploaded = str(d[key][b'uploaded'])
-                path = str(d[key][b'path'])
-                seedtime = str(d[key][b'seedtime'])
-                print(f'{fileName}, {added_on}, {completed_on}, {downloaded}, {uploaded}, {path}, {seedtime}')
-                self.parse_data.append(f'{fileName}, {added_on}, {completed_on}, {downloaded}, {uploaded}, {path}, {seedtime}, \n')
-                # print(fileName + "," + added_on + "," + completed_on + "," + downloaded + "," + uploaded + "," + path + "," + seedtime)
+                path = str((d[key][b'path']).decode('utf8')).strip()
+                seedtime = str(d[key][b'seedtime']).strip()
+                print(f'{fileName}:{type(key)}, {added_on}, {completed_on}, {downloaded}, {uploaded}, {path}, {seedtime}')
+                self.parse_data.append(f'{fileName}, {added_on}, {completed_on}, {downloaded}, {uploaded}, {path}, {seedtime}')
 
         f.close()
 
